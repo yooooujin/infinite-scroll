@@ -1,0 +1,12 @@
+header {
+  width: 100%;
+  padding: 16px;
+
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header__title {
+  margin: 0;
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.8);
+}
