@@ -2,11 +2,13 @@
   "name": "infinite_scroll",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yooooujin.github.io/infinite-scroll/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@testing-library/react": "^13.0.0",
@@ -30,6 +32,7 @@
     "@typescript-eslint/parser": "latest",
     "eslint": "^8.19.0",
     "eslint-plugin-react": "latest",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1",
     "stylelint": "^14.9.1",
     "stylelint-config-standard": "^26.0.0",
