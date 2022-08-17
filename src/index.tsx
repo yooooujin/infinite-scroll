@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals'
 
 import './styles/globalStyle.css'
 
-const root = ReactDOM.createRoot(document.querySelector('body') as HTMLElement)
+const root = ReactDOM.createRoot(document.querySelector('#app') as HTMLElement)
 root.render(
   <React.StrictMode>
     <App />
