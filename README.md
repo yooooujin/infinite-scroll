@@ -3,4 +3,5 @@
 
 - [x] 상품 목록
 - [x] infinite scroll(intersection observer사용)
-- [ ] loading
+- [x] loading
+- [ ] image lazy load
