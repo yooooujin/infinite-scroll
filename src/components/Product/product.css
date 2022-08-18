@@ -30,3 +30,20 @@
 .product__info .product__info__price {
   margin: 0;
 }
+
+/* skeleton */
+.skeleton .product__thumbnail,
+.skeleton .product__info__name,
+.skeleton .product__info__price {
+  background-color: rgba(0, 0, 0, 0.05);
+
+  border-radius: 2px;
+}
+
+.skeleton .product__info__name {
+  min-height: 1.2rem;
+}
+
+.skeleton .product__info__price {
+  min-height: 1rem;
+}
