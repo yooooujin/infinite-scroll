@@ -1,24 +1,36 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Products from './components/Products'
 import Layout from './Layout'
-import productsData from './constants/products'
+import ProductsSkeleton from './components/Products/ProductsSkeleton'
+import getProducts from './api/getProducts'
 
 const perPage = 8
 
 function App() {
+  const [loading, setLoading] = useState(true)
   const [page, setPage] = useState<number>(1)
   const [products, setProducts] = useState<{
     pages: IProductData[][]
     total: number
   }>({ pages: [], total: 0 })
 
-  const targetRef = useRef<HTMLDivElement>(null)
+  const targetRef = useRef<HTMLUListElement>(null)
 
-  const getProducts = useCallback(function (page: number): IProductsData {
-    return {
-      data: productsData.data.slice((page - 1) * perPage, page * perPage),
-      total: productsData.total,
+  const handleFetch = useCallback(async (page: number) => {
+    setLoading(true)
+
+    const { data, total } = await getProducts(page, perPage)
+
+    if (total > page * perPage) {
+      setProducts((prev) => {
+        const pages = prev.pages
+        pages[page - 1] = data
+
+        return { pages, total }
+      })
     }
+
+    setLoading(false)
   }, [])
 
   const handleScrollPages = useCallback(
@@ -31,39 +43,33 @@ function App() {
   )
 
   useEffect(() => {
-    const { data, total } = getProducts(page)
-
-    if (total <= page * perPage) return
-
-    setProducts((prev) => {
-      const pages = prev.pages
-      pages[page - 1] = data
-
-      return { pages, total }
-    })
+    handleFetch(page)
   }, [page])
 
   useEffect(() => {
-    if (!targetRef.current) return
+    const children = targetRef.current?.children
 
     const observer = new IntersectionObserver(handleScrollPages, {
-      threshold: 1,
+      threshold: [0, 1],
     })
 
-    observer.observe(targetRef.current)
+    if (children && children.length > 0) {
+      observer.observe(children[children.length - 1].children[perPage - 1])
+    }
 
     return () => {
       observer.disconnect()
     }
-  }, [targetRef])
+  }, [targetRef.current])
 
   return (
     <Layout>
-      {products.pages.map((page, index) => (
-        <Products key={`products_page_${index}`} data={page} />
-      ))}
-
-      <section ref={targetRef}>{/* TODO Loading */}</section>
+      <section ref={targetRef}>
+        {products.pages.map((page, index) => (
+          <Products key={`products_page_${index}`} data={page} />
+        ))}
+        {loading && <ProductsSkeleton />}
+      </section>
     </Layout>
   )
 }
