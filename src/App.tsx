@@ -35,11 +35,11 @@ function App() {
 
   const handleScrollPages = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && !loading) {
         setPage((prevPage) => prevPage + 1)
       }
     },
-    []
+    [loading]
   )
 
   useEffect(() => {
@@ -47,20 +47,20 @@ function App() {
   }, [page])
 
   useEffect(() => {
-    const children = targetRef.current?.children
+    const lastChild = targetRef.current?.lastElementChild
 
     const observer = new IntersectionObserver(handleScrollPages, {
-      threshold: [0, 1],
+      threshold: 1,
     })
 
-    if (children && children.length > 0) {
-      observer.observe(children[children.length - 1].children[perPage - 1])
+    if (lastChild?.lastElementChild) {
+      observer.observe(lastChild.lastElementChild)
     }
 
     return () => {
       observer.disconnect()
     }
-  }, [targetRef.current])
+  }, [targetRef.current?.lastElementChild])
 
   return (
     <Layout>
